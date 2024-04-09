@@ -1,0 +1,38 @@
+Experiment -2 Write a Lex Program to implement a Lexical Analyzer using Lex tool.
+Source code
+
+%{
+#include <stdio.h>
+%}
+digit [0-9]
+number {digit}+(\.{digit}+)?
+ws [ \t\n]
+%%
+{ws} /* Skip whitespace */
+{number} { printf("NUMBER: %s\n", yytext); }
+"+" { printf("ADD\n"); }
+"-" { printf("SUBTRACT\n"); }
+"*" { printf("MULTIPLY\n"); }
+"/" { printf("DIVIDE\n"); }
+. { printf("Invalid character: %s\n", yytext); }
+%%
+int main() {
+ yylex();
+ return 0;
+}
+
+Output:
+To compile and run the Lex program, you can use the following commands
+lex (your_lex_program).l
+gcc lex.yy.c -o lexer -ll
+./lexer
+Expression : 3 + 4 * 2 - 6 / 3
+NUMBER: 3
+ADD
+NUMBER: 4
+MULTIPLY
+NUMBER: 2
+SUBTRACT
+NUMBER: 6
+DIVIDE
+NUMBER: 3

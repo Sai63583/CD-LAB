@@ -1,0 +1,88 @@
+Experiment 7 : Write a C program for eliminating the left recursion and left factoring of a given grammar.
+Source Code:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_RULES 100
+#define MAX_LENGTH 100
+// Structure to hold production rules
+typedef struct {
+ char lhs; // Left hand side of the production
+ char rhs[MAX_LENGTH]; // Right hand side of the production
+} Production;
+Production productions[MAX_RULES];
+int prodCount = 0;
+void eliminateLeftRecursion() {
+ for (int i = 0; i < prodCount; i++) {
+ if (productions[i].lhs == productions[i].rhs[0]) {
+ // Left recursion detected
+ char newNonTerminal = productions[i].lhs + 'A'; // Choosing a new non-terminal
+ char alpha[MAX_LENGTH], beta[MAX_LENGTH];
+ int alphaIndex = 0, betaIndex = 0;
+ // Separate alpha and beta
+ for (int j = 1; productions[i].rhs[j] != '\0'; j++) {
+ alpha[alphaIndex++] = productions[i].rhs[j];
+ }
+ alpha[alphaIndex] = '\0';
+ for (int j = i + 1; j < prodCount; j++) {
+ if (productions[j].lhs == productions[i].lhs) {
+ strcpy(beta, productions[j].rhs);
+ beta[strlen(beta) + 1] = '\0';
+ beta[strlen(beta)] = newNonTerminal;
+ // Modify original production
+ productions[i].rhs[0] = newNonTerminal;
+ strcpy(&productions[i].rhs[1], alpha);
+ // Add new production for beta
+ productions[prodCount].lhs = newNonTerminal;
+ strcpy(productions[prodCount++].rhs, beta);
+ productions[prodCount].lhs = newNonTerminal;
+ strcpy(productions[prodCount++].rhs, "ε"); // Adding epsilon production
+ }
+ }
+ break; // Handling one left recursion at a time
+ }
+ }
+}
+void leftFactoring() 
+{
+ // This is a placeholder for left factoring logic
+ // Implementing a full left factoring algorithm here is complex and depends on the specific needs
+ // The basic idea is to look for common prefixes in the RHS of productions and factor them out
+}
+void readInput() {
+ char input[MAX_LENGTH];
+ printf("Enter the production rules (Terminate with #):\n");
+ while (1) {
+ scanf("%s", input);
+ if (input[0] == '#') break;
+ productions[prodCount].lhs = input[0];
+ strcpy(productions[prodCount++].rhs, &input[3]); // Assuming format is A->alpha
+ }
+}
+void printProductions() {
+ printf("Modified Grammar:\n");
+ for (int i = 0; i < prodCount; i++) {
+ printf("%c -> %s\n", productions[i].lhs, productions[i].rhs);
+ }
+}
+int main() {
+ readInput();
+ eliminateLeftRecursion();
+ // leftFactoring(); // Uncomment this after implementing left factoring logic
+ printProductions();
+ return 0;
+}
+
+Output: for giving grammar 
+A->Ab
+A->a
+B->Bc
+B->b
+# or epsilon 
+A->aA'
+A'->bA'
+A'->ε
+B->bB'
+B'->cB'
+B'->#

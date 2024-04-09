@@ -1,0 +1,87 @@
+Experiment -5 Write a C program to implement recursive descent parser.
+Source Code :
+
+For Grammar E -> num T
+T -> * num T | € // not e it is epsilon
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+// Function prototypes
+int E();
+int T();
+int match(char);
+void error();
+char input[100];
+int i = 0;
+int main( ) 
+{
+ printf("Enter a string: ");
+ scanf("%s", input);
+ if (E() && input[i] == '\0')
+ printf("String is in the language.\n");
+ else
+ printf("String is not in the language.\n");
+ return 0;
+}
+// Function to parse non-terminal E
+int E( ) 
+{
+ if (isdigit(input[i])) 
+{
+ i++;
+ if (T())
+ return 1;
+ else
+ return 0;
+ } 
+else
+{
+ error();
+ return 0;
+ }
+}
+// Function to parse non-terminal T
+int T( ) 
+{
+ if (input[i] == '*') 
+{
+ i++;
+ if (isdigit(input[i])) 
+{
+ i++;
+ return T();
+ } 
+else 
+ {
+ error();
+ return 0;
+ }
+ }
+ return 1; // epsilon production
+}
+// Function to match terminal
+int match(char ch) 
+{
+ if (input[i] == ch)
+{
+ i++;
+ return 1;
+ }
+else
+{
+ error( );
+ return 0;
+ }
+}
+// Function to handle errors
+void error( ) 
+{
+ printf("Syntax Error\n");
+ exit(1);
+}
+
+Output:
+Enter a string: 3 * 4 
+String is in the language.
+Enter a string: s t r +
+Syntax Error

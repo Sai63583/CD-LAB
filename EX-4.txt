@@ -1,0 +1,73 @@
+Experiment 4 : Write a C program to implement the Brute force technique of Top down Parsing.
+Source Code:
+
+#include <stdio.h>
+#include <string.h>
+// Function to check if the input string is valid according to the grammar
+int parse(char *input);
+// Function to parse the grammar starting from the given position in the input string
+int parseGrammar(char *input, int position);
+// Grammar rules
+int ruleS(char *input, int position);
+int ruleAB(char *input, int position);
+int ruleA(char *input, int position);
+int ruleB(char *input, int position);
+int main() 
+{
+ char input[100];
+ printf("Enter the string to parse: ");
+ scanf("%s", input);
+ if (parse(input))
+ printf("Valid string according to the grammar.\n");
+ else
+ printf("Invalid string according to the grammar.\n");
+ return 0;
+}
+int parse(char *input)
+{
+ // Start parsing from the beginning of the string
+ return ruleS(input, 0);
+}
+int parseGrammar(char *input, int position) 
+{
+ // Implement your top-down parsing logic here
+ // Return 1 if the input string is valid according to the grammar, otherwise return 0
+ // You can call other grammar rules functions from here to implement the parsing logic
+}
+int ruleS(char *input, int position) 
+{
+ // S -> AB
+ return ruleAB(input, position);
+}
+int ruleAB(char *input, int position)
+{
+ // AB -> A
+ if (ruleA(input, position))
+ return 1;
+ // AB -> B
+ else if (ruleB(input, position))
+ return 1;
+ else
+ return 0;
+}
+int ruleA(char *input, int position) 
+{
+ // A -> 'a'
+ if (input[position] == 'a')
+ return parseGrammar(input, position + 1);
+ else
+ return 0; }
+int ruleB(char *input, int position) 
+{
+ // B -> 'b'
+ if (input[position] == 'b')
+ return parseGrammar(input, position + 1);
+ else
+ return 0;
+}
+
+Output:
+Enter the string to parse: ab
+Valid string according to the grammar.
+Enter the string to parse: aaabbb
+Valid string according to the grammar

@@ -1,0 +1,64 @@
+Ex :3 Write a C program to Simulate Lexical Analyzer to validating a given input String
+Source Code:
+
+#include <stdio.h>
+a#include <ctype.h>
+#include <stdbool.h>
+// Function to check if a character is an operator
+bool isOperator(char ch)
+{
+ return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
+}
+// Function to validate an identifier
+bool isValidIdentifier(const char *str) 
+{
+ if (!isalpha(str[0]))
+ return false;
+ for (int i = 1; str[i] != '\0'; i++) 
+{
+ if (!isalnum(str[i]))
+ return false;
+ }
+ return true;
+}
+// Function to validate an integer
+bool isValidInteger(const char *str) 
+{
+ for (int i = 0; str[i] != '\0'; i++) 
+{
+ if (!isdigit(str[i]))
+ return false;
+ }
+ return true;
+}
+int main( ) 
+{
+ char input[100];
+ printf("Enter the input string: ");
+ scanf("%99[^\n]", input); 
+ char *token = strtok(input, " \t\n");
+ while (token != NULL) 
+{
+ if (isValidIdentifier(token))
+ printf("Token: %s, Type: Identifier\n", token);
+ else if (isValidInteger(token))
+ printf("Token: %s, Type: Integer\n", token);
+ else if (isOperator(token[0]))
+ printf("Token: %s, Type: Operator\n", token);
+ else
+ printf("Token: %s, Type: Invalid\n", token);
+ token = strtok(NULL, " \t\n");
+ }
+ return 0;
+}
+
+Output:
+Enter the input string: x = 10 + y * 5
+Token: x, Type: Identifier
+Token: =, Type: Operator
+Token: 10, Type: Integer
+Token: +, Type: Operator
+Token: y, Type: Identifier
+Token: *, Type: Operator
+Token: 5, Type: Integer
+

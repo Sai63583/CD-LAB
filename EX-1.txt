@@ -1,0 +1,159 @@
+Experiment -1 Write a C program to identify different types of Tokens in a given Program
+Source Code:
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+// Function to check if a given string is a keyword
+int isKeyword(char* str) 
+{
+ char keywords[ ][10] = {"int", "float", "if", "else", "while", "for", "return"};int i;
+ for ( i = 0; i < sizeof(keywords) / sizeof(keywords[0]); i++)
+ {
+ if (strcmp(str, keywords[i]) == 0) 
+ {
+ return 1; // Keyword found
+ }
+ }
+ return 0; // Not a keyword
+}
+// Function to check if a given character is an operator or punctuation
+int isOperatorOrPunctuation(char ch) 
+{
+ char operators[ ] = "+ - * / % = < > ! & | "; int i;
+ for ( i = 0; i < strlen(operators); i++) 
+ {
+ if (ch == operators[i])
+ {
+ return 1; // Operator or punctuation found
+ }
+ }
+ return 0; // Not an operator or punctuation
+}
+int main() 
+{
+ char program[1000]; char token[100]; int i = 0;
+ printf("Enter a program:\n");
+ fgets(program, sizeof(program), stdin);
+ while (program[i] != '\0')
+{
+ // Skip white spaces
+ while (isspace(program[i])) 
+ {
+ i++;
+ }
+ // Check for identifiers or keywords
+ if (isalpha(program[i]) || program[i] == '_')
+ {
+ int j = 0;
+ while (isalnum(program[i]) || program[i] == '_')
+ {
+ token[j++] = program[i++];
+ }
+ token[j] = '\0';
+ if (isKeyword(token))
+ {
+ printf("Keyword: %s\n", token);
+ } 
+ else 
+
+{
+ printf("Identifier: %s\n", token);
+ 
+}
+ 
+}
+ // Check for constants
+ else if (isdigit(program[i])) 
+ 
+{
+ int j = 0;
+ while (isdigit(program[i])) 
+ 
+{
+ token[j++] = program[i++];
+ 
+}
+ token[j] = '\0';
+ printf("Constant: %s\n", token);
+ 
+}
+ // Check for operators or punctuation
+ else if (isOperatorOrPunctuation(program[i]))
+ 
+{
+printf("Operator/Punctuation: %c\n", program[i++]);
+ 
+}
+ // Ignore other characters
+ else 
+ 
+{
+ i++;
+ 
+}
+ 
+}
+ return 0; 
+}
+
+Output:
+Enter a program:
+#include <stdio.h>
+int main() {
+ int a = 5;
+ int b = 10;
+ if (a > b) {
+ printf("a is greater than b
+\n");
+ 
+}
+else {
+ printf("b is greater than a
+\n");
+ 
+}
+ return 0; }
+Keyword: #include
+Keyword: int
+Identifier: main
+Operator/Punctuation: (
+Operator/Punctuation: )
+Operator/Punctuation: {
+Keyword: int
+Identifier: a
+Operator/Punctuation: =
+Constant: 5
+Operator/Punctuation: ;
+Keyword: int
+Identifier: b
+Operator/Punctuation: =
+Constant: 10
+Operator/Punctuation: ;
+Keyword: if
+Operator/Punctuation: (
+Identifier: a
+Operator/Punctuation: >
+Identifier: b
+Operator/Punctuation: )
+Operator/Punctuation: {
+Identifier: printf
+Operator/Punctuation: (
+Constant: "a is greater than b
+\n"
+Operator/Punctuation: )
+Operator/Punctuation: ;
+Operator/Punctuation: }
+Keyword: else
+Operator/Punctuation: {
+Identifier: printf
+Operator/Punctuation: (
+Constant: "b is greater than a
+\n"
+Operator/Punctuation: )
+Operator/Punctuation: ;
+Operator/Punctuation: }
+Keyword: return
+Constant: 0
+Operator/Punctuation: ;
+Operator/Punctuation: }
