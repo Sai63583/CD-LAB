@@ -1,0 +1,76 @@
+Experiment -8 Write a C program to check the validity of input string using Predictive Parser.
+
+Source Code:
+
+#include <stdio.h>
+#include <string.h>
+#include<stdlib.h>
+char* input;
+int currentIndex = 0;
+void S();
+void B();
+void match(char expectedToken);
+void nextToken();
+// Function to match the current token with the expected token
+void match(char expectedToken) 
+{
+ if (input[currentIndex] == expectedToken)
+ {
+ nextToken();
+ } 
+else 
+ {
+ printf("Error: Expected %c, found %c\n", expectedToken, input[currentIndex]);
+ exit(1);
+ }
+}
+// Function to move to the next character in the input string
+void nextToken() 
+{
+ currentIndex++;
+}
+// S -> aB
+void S() 
+{
+ match('a');
+ B();
+}
+// B -> bB | ε
+void B() 
+{
+ while (input[currentIndex] == 'b') {
+ match('b');
+ }
+}
+int main() 
+{
+ char inputBuffer[100];
+ printf("Enter a string: ");
+ scanf("%99s", inputBuffer);
+ input = inputBuffer;
+ S();
+ // If we've consumed all input successfully
+ if (input[currentIndex] == '\0') 
+ {
+ printf("The input string is valid.\n");
+ } 
+else 
+ {
+ printf("The input string is invalid.\n");
+ }
+For this grammar
+S -> aB
+B -> bB | ε
+ return 0;
+}
+
+Output:
+Enter a string: a
+The input string is valid.
+Enter a string: abbb
+The input string is valid.
+Enter a string: b
+ERROR!
+Error: Expected a, found b
+Enter a string: axb
+The input string is invalid
